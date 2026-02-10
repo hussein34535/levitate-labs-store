@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useCart } from "@/context/CartContext";
 
 // Standard variant images
 import productStdFront from "@/assets/product-standard-front.png";
@@ -75,6 +76,7 @@ const bigReviews = [
 ];
 
 const ProductPage = () => {
+  const { addItem } = useCart();
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedPlug, setSelectedPlug] = useState(0);
@@ -221,7 +223,17 @@ const ProductPage = () => {
                 </div>
 
                 {/* Add to Cart */}
-                <button className="w-full py-3.5 md:py-4 bg-primary text-primary-foreground font-display font-bold text-sm tracking-widest uppercase rounded-md hover:box-glow-strong active:scale-[0.98] transition-all duration-200">
+                <button
+                  onClick={() => addItem({
+                    productId: "floating-headphone-stand",
+                    name: variant.subtitle,
+                    price: parseFloat(variant.price.replace("$", "")),
+                    image: variant.colors[selectedColor].image,
+                    variant: variant.name,
+                    color: variant.colors[selectedColor].name
+                  })}
+                  className="w-full py-3.5 md:py-4 bg-primary text-primary-foreground font-display font-bold text-sm tracking-widest uppercase rounded-md hover:box-glow-strong active:scale-[0.98] transition-all duration-200"
+                >
                   Add to Cart
                 </button>
 
@@ -449,7 +461,17 @@ const ProductPage = () => {
               <span className="text-[10px] font-bold text-primary">SAVE 25%</span>
             </div>
           </div>
-          <button className="bg-primary text-primary-foreground font-display font-bold text-xs px-4 py-2.5 rounded-md whitespace-nowrap active:scale-95 transition-transform">
+          <button
+            onClick={() => addItem({
+              productId: "floating-headphone-stand",
+              name: variant.subtitle,
+              price: parseFloat(variant.price.replace("$", "")),
+              image: variant.colors[selectedColor].image,
+              variant: variant.name,
+              color: variant.colors[selectedColor].name
+            })}
+            className="bg-primary text-primary-foreground font-display font-bold text-xs px-4 py-2.5 rounded-md whitespace-nowrap active:scale-95 transition-transform"
+          >
             Add to cart
           </button>
         </div>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ShoppingCart, Search, User, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { setCartOpen, cartCount } = useCart();
 
   const links = [
     { label: "Home", href: "/" },
@@ -47,11 +49,16 @@ const Navbar = () => {
           <button className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors">
             <User size={20} />
           </button>
-          <button className="relative text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            className="relative text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setCartOpen(true)}
+          >
             <ShoppingCart size={20} />
-            <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
-              0
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
       </div>

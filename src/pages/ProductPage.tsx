@@ -264,7 +264,7 @@ const ProductPage = () => {
                       <span className="font-display font-bold text-foreground">{review.name}</span>
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((s) => (
-                          <Star key={s} size={12} className="fill-yellow-400 text-yellow-400" />
+                          <Star key={s} size={12} className="fill-amber-400 text-amber-400" />
                         ))}
                       </div>
                     </div>

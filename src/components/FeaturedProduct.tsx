@@ -44,11 +44,10 @@ const FeaturedProduct = () => {
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
-                  className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${
-                    selectedImage === i
+                  className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${selectedImage === i
                       ? "border-primary box-glow"
                       : "border-border hover:border-muted-foreground"
-                  }`}
+                    }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-contain bg-card p-0.5" />
                 </button>
@@ -81,11 +80,10 @@ const FeaturedProduct = () => {
                       setSelectedColor(i);
                       setSelectedImage(i === 0 ? 0 : 4);
                     }}
-                    className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedColor === i
+                    className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${selectedColor === i
                         ? "border-primary box-glow"
                         : "border-border hover:border-muted-foreground"
-                    }`}
+                      }`}
                   >
                     <img src={variant.image} alt={variant.name} className="w-full h-full object-contain bg-card p-0.5" />
                   </button>
@@ -101,11 +99,10 @@ const FeaturedProduct = () => {
                   <button
                     key={plug}
                     onClick={() => setSelectedPlug(i)}
-                    className={`px-3 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${
-                      selectedPlug === i
+                    className={`px-3 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${selectedPlug === i
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                    }`}
+                      }`}
                   >
                     {plug}
                   </button>
@@ -118,7 +115,7 @@ const FeaturedProduct = () => {
               Add to Cart
             </button>
 
-            <a href="#" className="block text-center text-sm text-primary hover:underline">
+            <a href="/products/floating-headphone-stand-leds" className="block text-center text-sm text-primary hover:underline">
               View full details →
             </a>
 
@@ -140,7 +137,7 @@ const FeaturedProduct = () => {
                   ❓ What's Included
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground space-y-1 text-xs md:text-sm">
-                  <p>1 x Levitate Labs headphone stand</p>
+                  <p>1 x Orbita headphone stand</p>
                   <p>1 x Magnet</p>
                   <p>1 x Power cable</p>
                   <p>1 x User guide</p>

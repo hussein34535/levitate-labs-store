@@ -10,11 +10,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import productFront from "@/assets/product-standard-front.png";
-import productAngle from "@/assets/product-standard-angle.png";
-import productWhite from "@/assets/product-standard-white.png";
-import productSide from "@/assets/product-standard-side.png";
-import productDetail from "@/assets/product-standard-detail.png";
+// Standard variant images
+import productStdFront from "@/assets/product-standard-front.png";
+import productStdAngle from "@/assets/product-standard-angle.png";
+import productStdWhite from "@/assets/product-standard-white.png";
+import productStdSide from "@/assets/product-standard-side.png";
+import productStdDetail from "@/assets/product-standard-detail.png";
+
+// LED variant images
+import productLedBlack from "@/assets/product-black.png";
+import productLedWhite from "@/assets/product-white.png";
+import productLedFront from "@/assets/product-front.png";
+import productLedAngle from "@/assets/product-angle.png";
+import productLedSide from "@/assets/product-side.png";
 
 import review1 from "@/assets/review-1.png";
 import review2 from "@/assets/review-2.png";
@@ -23,16 +31,34 @@ import reviewLarge1 from "@/assets/review-large-1.png";
 import reviewLarge2 from "@/assets/review-large-2.png";
 import reviewLarge3 from "@/assets/review-large-3.png";
 
-import productLed from "@/assets/product-black.png";
 import setup1 from "@/assets/setup-1.png";
 import setup2 from "@/assets/setup-2.png";
 
-const colorVariants = [
-  { name: "Black", image: productFront },
-  { name: "White", image: productWhite },
+// ── Variant data ──
+const variants = [
+  {
+    name: "Standard",
+    subtitle: "Floating Headphone Stand",
+    price: "$86.58",
+    originalPrice: "$115.44",
+    images: [productStdFront, productStdAngle, productStdWhite, productStdSide, productStdDetail],
+    colors: [
+      { name: "Black", image: productStdFront, imageIndex: 0 },
+      { name: "White", image: productStdWhite, imageIndex: 2 },
+    ],
+  },
+  {
+    name: "Coloured LED's",
+    subtitle: "Floating Headphone Stand - Coloured LED's",
+    price: "$101.01",
+    originalPrice: "$135.65",
+    images: [productLedFront, productLedAngle, productLedBlack, productLedSide, productLedWhite],
+    colors: [
+      { name: "Black", image: productLedBlack, imageIndex: 2 },
+      { name: "White", image: productLedWhite, imageIndex: 4 },
+    ],
+  },
 ];
-
-const allImages = [productFront, productAngle, productWhite, productSide, productDetail];
 
 const plugTypes = ["US standard", "European standard", "Australian standard", "British standard"];
 
@@ -49,10 +75,19 @@ const bigReviews = [
 ];
 
 const ProductPage = () => {
+  const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedPlug, setSelectedPlug] = useState(0);
   const [selectedImage, setSelectedImage] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
+
+  const variant = variants[selectedVariant];
+
+  const handleVariantChange = (i: number) => {
+    setSelectedVariant(i);
+    setSelectedColor(0);
+    setSelectedImage(0);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,21 +103,20 @@ const ProductPage = () => {
               <div className="space-y-3">
                 <div className="bg-card rounded-lg overflow-hidden aspect-square flex items-center justify-center border border-border">
                   <img
-                    src={allImages[selectedImage]}
-                    alt="Floating Headphone Stand"
+                    src={variant.images[selectedImage]}
+                    alt={variant.subtitle}
                     className="w-full h-full object-contain p-4 md:p-8 animate-float"
                   />
                 </div>
                 <div className="grid grid-cols-5 gap-1.5 md:gap-2">
-                  {allImages.map((img, i) => (
+                  {variant.images.map((img, i) => (
                     <button
                       key={i}
                       onClick={() => setSelectedImage(i)}
-                      className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${
-                        selectedImage === i
-                          ? "border-primary box-glow"
-                          : "border-border hover:border-muted-foreground"
-                      }`}
+                      className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${selectedImage === i
+                        ? "border-primary box-glow"
+                        : "border-border hover:border-muted-foreground"
+                        }`}
                     >
                       <img src={img} alt="" className="w-full h-full object-contain bg-card p-0.5" />
                     </button>
@@ -93,7 +127,7 @@ const ProductPage = () => {
               {/* Product Info */}
               <div className="space-y-5">
                 <h1 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                  Floating Headphone Stand
+                  {variant.subtitle}
                 </h1>
 
                 {/* Rating */}
@@ -113,33 +147,53 @@ const ProductPage = () => {
 
                 {/* Price */}
                 <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                  <span className="text-2xl md:text-3xl font-display font-bold text-foreground">$86.58</span>
-                  <span className="text-base md:text-lg text-muted-foreground line-through">$115.44</span>
+                  <span className="text-2xl md:text-3xl font-display font-bold text-foreground">{variant.price}</span>
+                  <span className="text-base md:text-lg text-muted-foreground line-through">{variant.originalPrice}</span>
                   <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">
                     🏷 SAVE 25%
                   </span>
                 </div>
 
+                {/* Variant Selector */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Variant - <span className="text-foreground">{variant.name}</span>
+                  </p>
+                  <div className="flex gap-2">
+                    {variants.map((v, i) => (
+                      <button
+                        key={v.name}
+                        onClick={() => handleVariantChange(i)}
+                        className={`px-4 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${selectedVariant === i
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                          }`}
+                      >
+                        {v.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Color Selector */}
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">
-                    Colours - <span className="text-foreground">{colorVariants[selectedColor].name}</span>
+                    Colour - <span className="text-foreground">{variant.colors[selectedColor].name}</span>
                   </p>
                   <div className="flex gap-2.5">
-                    {colorVariants.map((variant, i) => (
+                    {variant.colors.map((color, i) => (
                       <button
-                        key={variant.name}
+                        key={color.name}
                         onClick={() => {
                           setSelectedColor(i);
-                          setSelectedImage(i === 0 ? 0 : 2);
+                          setSelectedImage(color.imageIndex);
                         }}
-                        className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                          selectedColor === i
-                            ? "border-primary box-glow"
-                            : "border-border hover:border-muted-foreground"
-                        }`}
+                        className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${selectedColor === i
+                          ? "border-primary box-glow"
+                          : "border-border hover:border-muted-foreground"
+                          }`}
                       >
-                        <img src={variant.image} alt={variant.name} className="w-full h-full object-contain bg-card p-0.5" />
+                        <img src={color.image} alt={color.name} className="w-full h-full object-contain bg-card p-0.5" />
                       </button>
                     ))}
                   </div>
@@ -155,11 +209,10 @@ const ProductPage = () => {
                       <button
                         key={plug}
                         onClick={() => setSelectedPlug(i)}
-                        className={`px-3 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${
-                          selectedPlug === i
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                        }`}
+                        className={`px-3 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${selectedPlug === i
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                          }`}
                       >
                         {plug}
                       </button>
@@ -220,9 +273,8 @@ const ProductPage = () => {
                       <button
                         key={i}
                         onClick={() => setReviewIndex(i)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          reviewIndex === i ? "bg-primary" : "bg-muted-foreground/30"
-                        }`}
+                        className={`w-2 h-2 rounded-full transition-all ${reviewIndex === i ? "bg-primary" : "bg-muted-foreground/30"
+                          }`}
                       />
                     ))}
                   </div>
@@ -295,7 +347,7 @@ const ProductPage = () => {
                   ❓ What's Included
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground space-y-1 text-xs md:text-sm">
-                  <p>1 x Levitate Labs headphone stand</p>
+                  <p>1 x Orbita headphone stand</p>
                   <p>1 x Magnet</p>
                   <p>1 x Power cable</p>
                   <p>1 x User guide</p>
@@ -365,7 +417,7 @@ const ProductPage = () => {
                   Is it compatible with all headphones/headsets?
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground text-xs md:text-sm">
-                  Levitate Labs headphone stand is crafted to support a wide range of headsets/headphone shapes and sizes, making it versatile for various models.
+                  Orbita headphone stand is crafted to support a wide range of headsets/headphone shapes and sizes, making it versatile for various models.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="faq3">
@@ -381,41 +433,6 @@ const ProductPage = () => {
             </Accordion>
           </div>
         </section>
-
-        {/* You May Also Like */}
-        <section className="py-8 md:py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground text-center mb-8">
-              You May Also Like...
-            </h2>
-            <div className="grid grid-cols-2 gap-3 md:gap-6 max-w-2xl mx-auto">
-              <a href="/products/floating-headphone-stand-leds" className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-all">
-                <div className="aspect-square overflow-hidden">
-                  <img src={productLed} alt="LED Stand" className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="text-xs md:text-sm font-display font-bold text-foreground leading-tight">Floating Headphone Stand - Coloured LED's</h3>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-sm md:text-base font-bold text-foreground">$101.01</span>
-                    <span className="text-xs text-muted-foreground line-through">$135.65</span>
-                  </div>
-                </div>
-              </a>
-              <a href="/products/floating-headphone-stand" className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-all">
-                <div className="aspect-square overflow-hidden">
-                  <img src={productFront} alt="Standard Stand" className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="text-xs md:text-sm font-display font-bold text-foreground leading-tight">Floating Headphone Stand</h3>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-sm md:text-base font-bold text-foreground">$86.58</span>
-                    <span className="text-xs text-muted-foreground line-through">$115.44</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />
@@ -423,12 +440,12 @@ const ProductPage = () => {
       {/* Sticky Bottom Cart Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-t border-border p-3 md:hidden">
         <div className="flex items-center gap-3">
-          <img src={allImages[selectedImage]} alt="" className="w-12 h-12 rounded-md bg-secondary object-contain p-1" />
+          <img src={variant.images[selectedImage]} alt="" className="w-12 h-12 rounded-md bg-secondary object-contain p-1" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-display font-bold text-foreground truncate">Floating Headphone Stand</p>
+            <p className="text-xs font-display font-bold text-foreground truncate">{variant.subtitle}</p>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-foreground">$86.58</span>
-              <span className="text-[10px] text-muted-foreground line-through">$115.44</span>
+              <span className="text-sm font-bold text-foreground">{variant.price}</span>
+              <span className="text-[10px] text-muted-foreground line-through">{variant.originalPrice}</span>
               <span className="text-[10px] font-bold text-primary">SAVE 25%</span>
             </div>
           </div>

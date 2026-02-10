@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { ShoppingCart, Search, User, Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
-    { label: "Home", href: "#" },
-    { label: "Catalog", href: "#products" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "/" },
+    { label: "Catalog", href: "/products/floating-headphone-stand" },
   ];
 
   return (
@@ -23,22 +23,22 @@ const Navbar = () => {
           </button>
           <div className="hidden md:flex items-center gap-6">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
 
-        <a href="#" className="absolute left-1/2 -translate-x-1/2">
+        <Link to="/" className="absolute left-1/2 -translate-x-1/2">
           <h1 className="text-base md:text-xl font-display font-bold tracking-[0.15em] md:tracking-[0.2em] text-foreground whitespace-nowrap">
-            LEVITATE LABS
+            ORBITA
           </h1>
-        </a>
+        </Link>
 
         <div className="flex items-center gap-3 md:gap-4">
           <button className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors">
@@ -59,14 +59,14 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl px-6 py-5 space-y-4">
           {links.map((link) => (
-            <a
+            <Link
               key={link.label}
-              href={link.href}
+              to={link.href}
               className="block text-base font-display font-medium text-foreground hover:text-primary transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <div className="flex items-center gap-5 pt-3 border-t border-border">
             <a href="#" className="flex items-center gap-2 text-sm text-muted-foreground">

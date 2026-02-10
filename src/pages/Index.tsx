@@ -1,11 +1,9 @@
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import FeaturedProduct from "@/components/FeaturedProduct";
-import CollectionsSection from "@/components/CollectionsSection";
+import ProductShowcase from "@/components/ProductShowcase";
 import ElevateSection from "@/components/ElevateSection";
 import NewsletterSection from "@/components/NewsletterSection";
-import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -15,11 +13,9 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <FeaturedProduct />
+        <ProductShowcase />
         <ElevateSection />
-        <CollectionsSection />
         <NewsletterSection />
-        <ContactSection />
       </main>
       <Footer />
     </div>

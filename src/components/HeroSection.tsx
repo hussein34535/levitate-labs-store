@@ -20,7 +20,7 @@ const HeroSection = () => {
           <span className="text-primary text-glow">Setup Loading...</span>
         </h2>
         <a
-          href="#products"
+          href="/products/floating-headphone-stand"
           className="mt-4 inline-flex items-center justify-center px-8 py-3.5 bg-primary text-primary-foreground font-display font-semibold text-sm tracking-widest uppercase rounded-sm hover:box-glow-strong transition-shadow duration-300"
         >
           SHOP NOW

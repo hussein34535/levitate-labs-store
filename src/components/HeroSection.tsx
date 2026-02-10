@@ -13,8 +13,8 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
       </div>
 
-      <div className="relative container mx-auto px-4 py-32 md:py-48 flex flex-col items-center text-center">
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-foreground mb-6">
+      <div className="relative container mx-auto px-4 py-24 md:py-48 flex flex-col items-center text-center">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-foreground mb-4 md:mb-6">
           Futuristic Gaming
           <br />
           <span className="text-primary text-glow">Setup Loading...</span>

@@ -3,12 +3,12 @@ import setup2 from "@/assets/setup-2.png";
 
 const ElevateSection = () => {
   return (
-    <section className="py-16 md:py-24 bg-card">
+    <section className="py-10 md:py-24 bg-card">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+        <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground mb-2 md:mb-3">
           Elevate your set up
         </h2>
-        <p className="text-muted-foreground mb-12">
+        <p className="text-sm md:text-base text-muted-foreground mb-8 md:mb-12">
           Available in black or white. Built to complement any desk aesthetic
         </p>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">

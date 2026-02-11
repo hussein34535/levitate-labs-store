@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useCart } from "@/context/CartContext";
+import ImageComparisonSlider from "@/components/ImageComparisonSlider";
 
 // Standard variant images
 import productStdFront from "@/assets/product-standard-front.png";
@@ -396,16 +397,12 @@ const ProductPage = () => {
               Elevate your setup
             </h2>
             <p className="text-muted-foreground text-center text-sm mb-8">
-              Available in black or white. Built to complement any desk aesthetic
+              Available in black or white. Drag to compare — built to complement any desk aesthetic
             </p>
-            <div className="grid grid-cols-2 gap-3 md:gap-6 max-w-3xl mx-auto">
-              <div className="rounded-lg overflow-hidden border border-border">
-                <img src={setup1} alt="Black setup" className="w-full h-full object-cover" />
-              </div>
-              <div className="rounded-lg overflow-hidden border border-border">
-                <img src={setup2} alt="White setup" className="w-full h-full object-cover" />
-              </div>
-            </div>
+            <ImageComparisonSlider
+              beforeImage={setup1}
+              afterImage={setup2}
+            />
           </div>
         </section>
 

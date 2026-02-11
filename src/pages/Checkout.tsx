@@ -9,59 +9,83 @@ import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, MapPin, Package } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
+
+const COUNTRIES = [
+    "Egypt", "Saudi Arabia", "United Arab Emirates", "Kuwait", "Qatar", "Bahrain", "Oman",
+    "Jordan", "Lebanon", "Iraq", "Morocco", "Tunisia", "Algeria", "Libya",
+    "United States", "United Kingdom", "Canada", "Germany", "France", "Italy", "Spain",
+    "Netherlands", "Belgium", "Austria", "Switzerland", "Sweden", "Norway", "Denmark",
+    "Australia", "Japan", "South Korea", "China", "India", "Brazil", "Mexico",
+    "Turkey", "South Africa", "Nigeria", "Kenya", "Pakistan", "Bangladesh",
+    "Malaysia", "Singapore", "Thailand", "Vietnam", "Philippines", "Indonesia",
+    "Poland", "Czech Republic", "Romania", "Hungary", "Portugal", "Greece",
+    "Ireland", "Finland", "New Zealand", "Russia", "Ukraine"
+];
 
 const Checkout = () => {
     const { items, cartTotal, clearCart } = useCart();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [country, setCountry] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         const formData = new FormData(e.target as HTMLFormElement);
+
+        const firstName = formData.get("firstName") as string;
+        const lastName = formData.get("lastName") as string;
+
         const orderData = {
-            customer_name: `${formData.get('firstName')} ${formData.get('lastName')}`,
-            customer_email: formData.get('email') as string,
-            shipping_address: `${formData.get('address')}, ${formData.get('city')}, ${formData.get('zip')}`,
+            customer_name: `${firstName} ${lastName}`,
+            customer_email: formData.get("email") as string,
+            customer_first_name: firstName,
+            customer_last_name: lastName,
+            customer_phone: formData.get("phone") as string,
+            shipping_address: `${formData.get("address1")}, ${formData.get("city")}, ${formData.get("state")}, ${formData.get("zip")}, ${country}`,
+            shipping_address_line1: formData.get("address1") as string,
+            shipping_address_line2: formData.get("address2") as string,
+            shipping_city: formData.get("city") as string,
+            shipping_state: formData.get("state") as string,
+            shipping_zip: formData.get("zip") as string,
+            shipping_country: country,
             total_amount: cartTotal,
-            status: 'pending'
+            status: "pending",
         };
 
         try {
-            // 1. Create Order
             const { data: order, error: orderError } = await supabase
-                .from('orders')
+                .from("orders")
                 .insert(orderData)
                 .select()
                 .single();
 
             if (orderError) throw orderError;
 
-            // 2. Create Order Items
-            const orderItems = items.map(item => ({
+            const orderItems = items.map((item) => ({
                 order_id: order.id,
                 product_id: item.productId,
                 product_name: item.name,
                 variant: item.variant,
                 quantity: item.quantity,
-                price: item.price
+                price: item.price,
             }));
 
             const { error: itemsError } = await supabase
-                .from('order_items')
+                .from("order_items")
                 .insert(orderItems);
 
             if (itemsError) throw itemsError;
 
-            toast.success("Order placed successfully!");
+            toast.success("Order placed successfully! Order ID: " + order.id.slice(0, 8));
             clearCart();
-            navigate("/");
+            navigate("/track?order=" + order.id);
         } catch (error) {
-            console.error('Checkout error:', error);
+            console.error("Checkout error:", error);
             toast.error("Failed to place order. Please try again.");
         } finally {
             setLoading(false);
@@ -73,7 +97,9 @@ const Checkout = () => {
             <div className="min-h-screen bg-background flex flex-col">
                 <Navbar />
                 <div className="flex-1 flex flex-col items-center justify-center p-4">
-                    <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+                    <Package size={48} className="text-muted-foreground mb-4" />
+                    <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+                    <p className="text-muted-foreground mb-6">Add some items to get started</p>
                     <Button onClick={() => navigate("/")}>Continue Shopping</Button>
                 </div>
                 <Footer />
@@ -97,49 +123,102 @@ const Checkout = () => {
                 <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
                     {/* Checkout Form */}
                     <div className="space-y-8">
-                        <div>
-                            <h2 className="text-2xl font-display font-bold mb-6">Contact Information</h2>
-                            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="firstName">First name</Label>
-                                        <Input id="firstName" name="firstName" required />
+                        <form id="checkout-form" onSubmit={handleSubmit} className="space-y-8">
+                            {/* Contact Info */}
+                            <div>
+                                <h2 className="text-2xl font-display font-bold mb-6 flex items-center gap-2">
+                                    <span className="w-8 h-8 rounded-full bg-primary/20 text-primary text-sm flex items-center justify-center font-bold">1</span>
+                                    Contact Information
+                                </h2>
+                                <div className="space-y-4 pl-10">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="firstName">First Name *</Label>
+                                            <Input id="firstName" name="firstName" required />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="lastName">Last Name *</Label>
+                                            <Input id="lastName" name="lastName" required />
+                                        </div>
                                     </div>
+
                                     <div className="space-y-2">
-                                        <Label htmlFor="lastName">Last name</Label>
-                                        <Input id="lastName" name="lastName" required />
+                                        <Label htmlFor="email">Email *</Label>
+                                        <Input id="email" name="email" type="email" required />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="phone">Phone Number *</Label>
+                                        <Input id="phone" name="phone" type="tel" required />
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="email" type="email" required />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="address">Address</Label>
-                                    <Input id="address" name="address" required />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
+                            {/* Shipping Address */}
+                            <div>
+                                <h2 className="text-2xl font-display font-bold mb-6 flex items-center gap-2">
+                                    <span className="w-8 h-8 rounded-full bg-primary/20 text-primary text-sm flex items-center justify-center font-bold">2</span>
+                                    <MapPin size={20} className="text-primary" />
+                                    Shipping Address
+                                </h2>
+                                <div className="space-y-4 pl-10">
                                     <div className="space-y-2">
-                                        <Label htmlFor="city">City</Label>
-                                        <Input id="city" name="city" required />
+                                        <Label htmlFor="country">Country *</Label>
+                                        <select
+                                            id="country"
+                                            name="country"
+                                            value={country}
+                                            onChange={(e) => setCountry(e.target.value)}
+                                            className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                            required
+                                        >
+                                            <option value="" disabled>Select country</option>
+                                            {COUNTRIES.map((c) => (
+                                                <option key={c} value={c}>{c}</option>
+                                            ))}
+                                        </select>
                                     </div>
+
                                     <div className="space-y-2">
-                                        <Label htmlFor="zip">ZIP Code</Label>
+                                        <Label htmlFor="address1">Address Line 1 *</Label>
+                                        <Input id="address1" name="address1" required />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="address2">Address Line 2</Label>
+                                        <Input id="address2" name="address2" />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="city">City *</Label>
+                                            <Input id="city" name="city" required />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="state">State / Province *</Label>
+                                            <Input id="state" name="state" required />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 max-w-[200px]">
+                                        <Label htmlFor="zip">ZIP / Postal Code *</Label>
                                         <Input id="zip" name="zip" required />
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="pt-8">
-                                    <h3 className="text-xl font-display font-bold mb-4">Payment Method</h3>
+                            {/* Payment */}
+                            <div>
+                                <h2 className="text-2xl font-display font-bold mb-6 flex items-center gap-2">
+                                    <span className="w-8 h-8 rounded-full bg-primary/20 text-primary text-sm flex items-center justify-center font-bold">3</span>
+                                    Payment Method
+                                </h2>
+                                <div className="pl-10">
                                     <RadioGroup defaultValue="card">
                                         <div className="flex items-center space-x-2 border border-border p-4 rounded-lg bg-card/50">
                                             <RadioGroupItem value="card" id="card" />
                                             <Label htmlFor="card" className="flex-1 cursor-pointer font-medium">Credit Card</Label>
                                             <div className="flex gap-2">
-                                                {/* Mock card icons */}
                                                 <div className="w-8 h-5 bg-foreground/20 rounded"></div>
                                                 <div className="w-8 h-5 bg-foreground/20 rounded"></div>
                                             </div>
@@ -149,8 +228,8 @@ const Checkout = () => {
                                         Payment is simulated for this demo. No actual charge will be made.
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
 
                     {/* Order Summary */}

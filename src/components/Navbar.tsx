@@ -10,6 +10,7 @@ const Navbar = () => {
   const links = [
     { label: "Home", href: "/" },
     { label: "Catalog", href: "/products/floating-headphone-stand" },
+    { label: "Track Order", href: "/track" },
   ];
 
   return (

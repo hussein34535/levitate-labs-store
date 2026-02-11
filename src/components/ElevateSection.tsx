@@ -1,5 +1,6 @@
 import setup1 from "@/assets/setup-1.png";
 import setup2 from "@/assets/setup-2.png";
+import ImageComparisonSlider from "./ImageComparisonSlider";
 
 const ElevateSection = () => {
   return (
@@ -9,16 +10,14 @@ const ElevateSection = () => {
           Elevate your set up
         </h2>
         <p className="text-sm md:text-base text-muted-foreground mb-8 md:mb-12">
-          Available in black or white. Built to complement any desk aesthetic
+          Available in black or white. Drag to compare — built to complement any desk aesthetic
         </p>
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div className="rounded-xl overflow-hidden border border-border hover:border-primary/40 transition-colors">
-            <img src={setup1} alt="Black setup" className="w-full h-full object-cover" />
-          </div>
-          <div className="rounded-xl overflow-hidden border border-border hover:border-primary/40 transition-colors">
-            <img src={setup2} alt="White setup" className="w-full h-full object-cover" />
-          </div>
-        </div>
+        <ImageComparisonSlider
+          beforeImage={setup1}
+          afterImage={setup2}
+          beforeLabel="Dark Edition"
+          afterLabel="Light Edition"
+        />
       </div>
     </section>
   );

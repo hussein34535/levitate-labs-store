@@ -13,6 +13,8 @@ import { ArrowLeft, CheckCircle2, MapPin, Package } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
 const COUNTRIES = [
     "Egypt", "Saudi Arabia", "United Arab Emirates", "Kuwait", "Qatar", "Bahrain", "Oman",
     "Jordan", "Lebanon", "Iraq", "Morocco", "Tunisia", "Algeria", "Libya",
@@ -80,6 +82,20 @@ const Checkout = () => {
                 .insert(orderItems);
 
             if (itemsError) throw itemsError;
+
+            // Send confirmation email (fire-and-forget, don't block order)
+            fetch(`${SUPABASE_URL}/functions/v1/send-order-confirmation`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    orderId: order.id,
+                    customerName: orderData.customer_name,
+                    customerEmail: orderData.customer_email,
+                    items: orderItems,
+                    totalAmount: cartTotal,
+                    shippingAddress: orderData.shipping_address,
+                }),
+            }).catch((err) => console.error("Email send error:", err));
 
             toast.success("Order placed successfully! Order ID: " + order.id.slice(0, 8));
             clearCart();

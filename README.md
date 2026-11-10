@@ -1,4 +1,17 @@
-# Welcome to your Lovable project
+# ORBITA Store
+
+Magnetic floating headphone stand storefront and admin panel built with Vite, React, TypeScript, shadcn-ui and Tailwind CSS.
+
+## Environment
+
+Copy `.env.example` to `.env` and fill in your Supabase project credentials:
+
+```sh
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-public-key
+```
+
+Without these values the storefront still runs, but checkout, order tracking and the admin panel cannot reach the database.
 
 ## Project info
 

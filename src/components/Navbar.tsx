@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { ShoppingCart, Search, User, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { setCartOpen, cartCount } = useCart();
+  const navigate = useNavigate();
 
   const links = [
     { label: "Home", href: "/" },
@@ -38,21 +39,30 @@ const Navbar = () => {
         </div>
 
         <Link to="/" className="absolute left-1/2 -translate-x-1/2">
-          <h1 className="text-base md:text-xl font-display font-bold tracking-[0.15em] md:tracking-[0.2em] text-foreground whitespace-nowrap">
+          <h1 className="text-base md:text-xl font-display font-bold tracking-[0.15em] md:tracking-[0.2em] text-foreground">
             ORBITA
           </h1>
         </Link>
 
         <div className="flex items-center gap-3 md:gap-4">
-          <button className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            onClick={() => navigate("/track")}
+            className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Search orders"
+          >
             <Search size={20} />
           </button>
-          <button className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors">
+          <button
+            onClick={() => navigate("/admin")}
+            className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Admin portal"
+          >
             <User size={20} />
           </button>
           <button
             className="relative text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setCartOpen(true)}
+            aria-label="Open cart"
           >
             <ShoppingCart size={20} />
             {cartCount > 0 && (
@@ -77,12 +87,20 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="flex items-center gap-5 pt-3 border-t border-border">
-            <a href="#" className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Search size={18} /> Search
-            </a>
-            <a href="#" className="flex items-center gap-2 text-sm text-muted-foreground">
-              <User size={18} /> Account
-            </a>
+            <Link
+              to="/track"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <Search size={18} /> Search Order
+            </Link>
+            <Link
+              to="/admin"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <User size={18} /> Admin
+            </Link>
           </div>
         </div>
       )}

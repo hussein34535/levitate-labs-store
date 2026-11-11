@@ -14,9 +14,14 @@ const AdminLogin = () => {
     return <Navigate to="/admin/orders" replace />;
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const success = await login(email, password);
+    // Read straight from the form so browser autofill (which can set the DOM
+    // value without firing React's onChange) is still picked up.
+    const form = e.currentTarget;
+    const emailValue = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
+    const passwordValue = (form.elements.namedItem("password") as HTMLInputElement).value;
+    const success = await login(emailValue, passwordValue);
     if (success) {
       toast.success("Welcome back to ORBITA Admin!");
       navigate("/admin/orders");
@@ -40,6 +45,9 @@ const AdminLogin = () => {
               <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="email"
+                name="email"
+                autoComplete="username"
+                spellCheck={false}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -55,6 +63,8 @@ const AdminLogin = () => {
               <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="password"
+                name="password"
+                autoComplete="current-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

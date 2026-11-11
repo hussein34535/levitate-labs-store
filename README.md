@@ -13,6 +13,21 @@ VITE_SUPABASE_ANON_KEY=your-anon-public-key
 
 Without these values the storefront still runs, but checkout, order tracking and the admin panel cannot reach the database.
 
+## Database
+
+Open your Supabase project → **SQL Editor** → **New query**, paste the contents of
+[`supabase/schema.sql`](supabase/schema.sql) and run it. That creates the
+`orders`, `order_items`, `order_status_history` and `admin_users` tables, the
+`verify_admin_password` RPC and the RLS policies the storefront expects.
+
+To create the first admin, uncomment the seed block at the bottom of the SQL
+file, change the email/password, and run it. Then sign in at `/admin/login`.
+
+> Security note: the current admin panel authenticates against a custom
+> `admin_users` table while still using the public anon key, so the policies in
+> the SQL file allow anon read/update of orders. Move the admin to Supabase Auth
+> with restrictive policies before handling real customer data.
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID

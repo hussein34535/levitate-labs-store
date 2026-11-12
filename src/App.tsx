@@ -11,6 +11,7 @@ import TrackOrder from "./pages/TrackOrder";
 import { CartProvider } from "./context/CartContext";
 import { AdminProvider } from "./context/AdminContext";
 import Cart from "./components/Cart";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -28,6 +29,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Cart />
             <Routes>
               {/* Storefront */}

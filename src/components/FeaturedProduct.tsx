@@ -45,7 +45,7 @@ const FeaturedProduct = () => {
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${selectedImage === i
-                      ? "border-primary box-glow"
+                      ? "border-primary ring-1 ring-primary/30"
                       : "border-border hover:border-muted-foreground"
                     }`}
                 >
@@ -81,7 +81,7 @@ const FeaturedProduct = () => {
                       setSelectedImage(i === 0 ? 0 : 4);
                     }}
                     className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${selectedColor === i
-                        ? "border-primary box-glow"
+                        ? "border-primary ring-1 ring-primary/30"
                         : "border-border hover:border-muted-foreground"
                       }`}
                   >

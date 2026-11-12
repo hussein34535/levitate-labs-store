@@ -148,7 +148,7 @@ const ProductPage = () => {
                     onClick={() => setSelectedImage(i)}
                     className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${
                       selectedImage === i
-                        ? "border-primary box-glow"
+                        ? "border-primary ring-1 ring-primary/30"
                         : "border-border hover:border-muted-foreground"
                     }`}
                   >
@@ -197,7 +197,7 @@ const ProductPage = () => {
                         onClick={() => handleVariantChange(i)}
                         className={`px-4 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${
                           selectedVariant === i
-                            ? "border-2 border-primary bg-primary/10 text-primary box-glow"
+                            ? "border-2 border-primary bg-primary/10 text-primary"
                             : "border border-border bg-secondary/50 text-foreground hover:border-muted-foreground"
                         }`}
                       >
@@ -222,7 +222,7 @@ const ProductPage = () => {
                         }}
                         className={`w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all ${
                           selectedColor === i
-                            ? "border-primary box-glow"
+                            ? "border-primary ring-1 ring-primary/30"
                             : "border-border hover:border-muted-foreground opacity-70"
                         }`}
                       >
@@ -244,7 +244,7 @@ const ProductPage = () => {
                         onClick={() => setSelectedPlug(i)}
                         className={`px-3 py-2.5 rounded-md text-xs md:text-sm font-medium transition-all ${
                           selectedPlug === i
-                            ? "border-2 border-primary bg-primary/10 text-primary box-glow"
+                            ? "border-2 border-primary bg-primary/10 text-primary"
                             : "border border-border bg-secondary/50 text-foreground hover:border-muted-foreground"
                         }`}
                       >
